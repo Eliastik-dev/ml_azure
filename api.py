@@ -36,7 +36,7 @@ class ReservationIn(BaseModel):
     canal_vente: str = "Intermédiaire"
     client_fidele: int = Field(0, ge=0, le=1)
     annulations_passees: int = Field(0, ge=0, le=50)
-    sejours_honores_passes: int = Field(0, ge=0, le=100)
+    sejours_honores_passes: int = Field(2, ge=0, le=100)
     logement_demande: str = "L10"
     garantie: Literal["Aucune", "Non remboursable", "Remboursable"] = "Aucune"
     id_agence: float | None = None

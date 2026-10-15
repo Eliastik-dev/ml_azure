@@ -16,17 +16,44 @@ def test_app_probability_between_0_and_1():
         date_reservation=today.isoformat(),
         date_arrivee=(today + timedelta(days=30)).isoformat(),
         nuits_totales=3,
+        nuits_week_end=1,
         nb_adultes=2,
+        nb_enfants=0,
         garantie="Aucune",
         canal_vente="Intermédiaire",
         client_fidele="Non",
         tarif_nuit=120,
         formule="Petit-déjeuner",
+        annulations_passees=0,
+        sejours_honores_passes=2,
         seuil=0.18,
     )
     assert isinstance(txt, str)
     assert decision in ("Appeler le client", "Ne pas appeler")
     assert 0.0 <= float(proba) <= 1.0
+
+
+def test_app_safe_profile_can_skip_call():
+    today = date.today()
+    _, decision, proba = predict(
+        site="Urbaine",
+        date_reservation=today.isoformat(),
+        date_arrivee=(today + timedelta(days=30)).isoformat(),
+        nuits_totales=3,
+        nuits_week_end=1,
+        nb_adultes=2,
+        nb_enfants=0,
+        garantie="Aucune",
+        canal_vente="Direct",
+        client_fidele="Non",
+        tarif_nuit=109,
+        formule="Petit-déjeuner",
+        annulations_passees=0,
+        sejours_honores_passes=2,
+        seuil=0.18,
+    )
+    assert float(proba) < 0.18
+    assert decision == "Ne pas appeler"
 
 
 def test_app_rejects_impossible_dates():
@@ -36,12 +63,16 @@ def test_app_rejects_impossible_dates():
         date_reservation=today.isoformat(),
         date_arrivee=(today - timedelta(days=1)).isoformat(),
         nuits_totales=2,
+        nuits_week_end=0,
         nb_adultes=2,
+        nb_enfants=0,
         garantie="Aucune",
         canal_vente="Direct",
         client_fidele="Non",
         tarif_nuit=100,
         formule="Petit-déjeuner",
+        annulations_passees=0,
+        sejours_honores_passes=0,
         seuil=0.18,
     )
     assert "arrivée" in msg.lower() or "≥" in msg
