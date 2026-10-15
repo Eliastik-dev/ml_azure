@@ -1,0 +1,11 @@
+# Python 3.13.15 (3.10+ accepté)
+scikit-learn==1.6.1
+pandas==2.2.3
+numpy==2.4.6
+joblib==1.4.2
+matplotlib==3.11.1
+gradio==6.27.0
+fastapi==0.136.3
+uvicorn==0.34.2
+httpx==0.28.1
+pytest==8.0.2
